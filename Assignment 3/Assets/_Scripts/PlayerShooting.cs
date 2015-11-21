@@ -12,6 +12,7 @@ public class PlayerShooting : MonoBehaviour {
     public AudioSource bulletFireSound;
     public AudioSource BulletImpactSound;
     public GameObject explosion;
+    public GameController gameController;
 
     //Private instance variable
     private GameObject[] _impacts;
@@ -71,6 +72,7 @@ public class PlayerShooting : MonoBehaviour {
                 {
                     Destroy(hit.transform.gameObject);
                     Instantiate(this.explosion, hit.point, Quaternion.identity);
+                    gameController.AddScore(100);
                     
                 }
 
