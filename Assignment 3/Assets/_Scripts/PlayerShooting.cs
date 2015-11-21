@@ -10,16 +10,25 @@ public class PlayerShooting : MonoBehaviour {
     public GameObject impact;
     public Animator rifleAnimator;
     public AudioSource bulletFireSound;
+    public AudioSource BulletImpactSound;
+    public GameObject explosion;
 
     //Private instance variable
     private GameObject[] _impacts;
     private int _currentImpact = 0;
     private int _maxImpact = 5;
+    private Transform _transform;
+
 
     private bool _shooting = false;
 
 	// Use this for initialization
 	void Start () {
+
+        //Reference to gameObject's transform component
+        this._transform = gameObject.GetComponent<Transform>();
+
+        //Object Pool for Impacts
         this._impacts = new GameObject[this._maxImpact];
         for(int impactCount = 0; impactCount < this._maxImpact; impactCount++)
         {
@@ -49,6 +58,38 @@ public class PlayerShooting : MonoBehaviour {
     //Physics effects
     void FixedUpdate()
     {
+        if (this._shooting)
+        {
+            this._shooting = false;
 
+            RaycastHit hit;
+
+            Debug.DrawRay(this._transform.position, this._transform.forward);
+            if (Physics.Raycast(this._transform.position, this._transform.forward, out hit, 50f))
+            {
+                if (hit.transform.CompareTag("Wood"))
+                {
+                    Destroy(hit.transform.gameObject);
+                    Instantiate(this.explosion, hit.point, Quaternion.identity);
+                    
+                }
+
+
+
+                //Assign the position of emitter at the point of hitting(impact)
+                this._impacts[_currentImpact].transform.position = hit.point;
+                //Play the Particle Effect
+                this._impacts[this._currentImpact].GetComponent<ParticleSystem>().Play();
+                //Play the bullet sound on hit
+                this.BulletImpactSound.Play();
+
+                // ensure that you don't go out of bounds of the object pool
+                if (++this._currentImpact >= this._maxImpact)
+                {
+                    this._currentImpact = 0;
+                }
+               
+            }
+        }
     }
 }
