@@ -73,8 +73,17 @@ public class PlayerShooting : MonoBehaviour {
                     Destroy(hit.transform.gameObject);
                     Instantiate(this.explosion, hit.point, Quaternion.identity);
                     gameController.AddScore(100);
-                    
+
                 }
+                //If hit by Player, It will get Destroyed but by taking the life of Player
+                if (hit.transform.CompareTag("Destroyer"))
+                {
+                    Destroy(hit.transform.gameObject);
+                    Instantiate(this.explosion, hit.point, Quaternion.identity);
+                    gameController.SubtractLives(1);//Decrease life of Player if he hits the object
+
+                }
+                
 
 
 
@@ -90,8 +99,9 @@ public class PlayerShooting : MonoBehaviour {
                 {
                     this._currentImpact = 0;
                 }
-               
+
             }
         }
-    }
+
+    }  
 }

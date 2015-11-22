@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour {
     //Public Instance Variables
     public Text scoreLabel;
     public Text livesLabel;
+    public Text gameOverLabel;
 
     //private Instance Variables
     private int _scoreValue;
@@ -47,6 +48,7 @@ public class GameController : MonoBehaviour {
     // Add lives to _livesValue Instance Variable
     public void AddLives(int value)
     {
+
         this._livesValue += value;
         this._updateScoreBoard();
     }
@@ -54,8 +56,11 @@ public class GameController : MonoBehaviour {
     // Subtract lives from _livesValue Instance Variable
     public void SubtractLives(int value)
     {
-        this._livesValue -= value;
-        this._updateScoreBoard();
+        
+            this._livesValue -= value;
+            this._updateScoreBoard();
+        
+
     }
 
 
@@ -64,6 +69,7 @@ public class GameController : MonoBehaviour {
         this._scoreValue = 0;
         this._livesValue = 5;
         this._updateScoreBoard();
+        this.gameOverLabel.enabled = false;
     }
 
     // Update is called once per frame
@@ -77,7 +83,7 @@ public class GameController : MonoBehaviour {
         this.scoreLabel.text = "Score: " + this._scoreValue;
         this.livesLabel.text = "Lives: " + this._livesValue;
     }
-
+   
 
 
 }
